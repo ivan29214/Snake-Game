@@ -80,19 +80,154 @@ public class Main extends Snake_UI implements ActionListener {
     }
 }
 class Snake_UI{
-    String signup(){
-        String a = JOptionPane.showInputDialog("Enter your name", null);
-        return a;
+     class SignUp extends JFrame{
+        JFrame f;
+        JTextField t1,t2;
+        JButton b1;
+        JLabel j1,j2,j3,j4;
+
+        SignUp(){
+            setLayout(null);
+            j1 =new JLabel("Signup");
+            j1.setFont(new Font("Times New Roman", Font.BOLD,30));
+            j1.setForeground(Color.BLUE);
+            j1.setBounds(130,10,300,30);
+            add(j1);
+            j3 =new JLabel("Username");
+            j3.setBounds(40,60,90,30);
+            add(j3);
+            t1 = new JTextField(100);
+            j4 =new JLabel("Password");
+            j4.setBounds(40,100,90,30);
+            add(j4);
+            t2=new JPasswordField(60);
+            b1=new JButton("Submit");
+
+
+            t1.setBounds(100,60,120,30);
+            t2.setBounds(100,100,120,30);
+            b1.setBounds(120,140,80,30);
+
+            b1.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent ae) {
+                    try {
+                        FileWriter fw = new FileWriter("login.txt",true);
+                        fw.write(t1.getText()+"\t"+t2.getText()+"\n");
+                        fw.close();
+                        JOptionPane.showMessageDialog(f,"Registration Completed");
+                        dispose();
+
+                    }catch(Exception e) {}
+
+
+                }
+
+            });
+            add(t1);
+            add(t2);
+            add(b1);
+        }
+    }
+
+
+    class Signin extends JFrame {
+        JFrame f;
+
+        JTextField t1, t2;
+        JButton b1,b2;
+        JLabel l1, l2,l3,l4;
+        Signin(){
+            setLayout(null);
+            setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+            l1 =new JLabel("Login");
+            l1.setFont(new Font("Times New Roman", Font.BOLD,30));
+            l1.setForeground(Color.BLUE);
+            l1.setBounds(130,10,300,30);
+            add(l1);
+
+            l3 =new JLabel("Username");
+            l3.setBounds(40,60,90,30);
+            add(l3);
+            t1=new JTextField(60);
+            l4 =new JLabel("Password");
+            l4.setBounds(40,100,90,30);
+            add(l4);
+            t2=new JPasswordField(60);
+            b1=new JButton("SignIn");
+            b2=new JButton("SignUp");
+
+            t1.setBounds(100,60,120,30);
+            t2.setBounds(100,100,120,30);
+            b1.setBounds(120,140,80,30);
+            b2.setBounds(120,170,80,30);
+
+            l2 =new JLabel("");
+            l2.setBounds(250,80,300,30);
+            add(l2);
+
+            add(t1);
+            add(t2);
+            add(b1);
+            add(b2);
+
+
+
+            b1.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent ae) {
+                    boolean matched =false;
+                    String uname =t1.getText().toString();
+                    String pwd =t2.getText().toString();
+                    try {
+                        FileReader fr = new FileReader("login.txt");
+                        BufferedReader br= new BufferedReader(fr);
+                        String line;
+                        while((line=br.readLine())!=null) {
+                            if(line.equals(uname+"\t"+pwd)) {
+                                matched=true;
+                                break;
+                            }
+                        }
+                        fr.close();
+                    }catch(Exception e) {}
+
+                    if(matched) {
+
+                        JOptionPane.showMessageDialog(f,"Hello, Welcome to Snake Game");
+                    }
+
+
+                    else {
+                        l2.setText("Invalid username /password");
+                        l2.setForeground(Color.RED);
+                    }
+                }
+            });
+
+
+
+
+            b2.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent ae) {
+                    SignUp s = new SignUp();
+                    s.setVisible(true);
+                    s.setBounds(200,200,500,300);
+                }
+            });
+
+        }}
+    class login extends JFrame{
+
+            Signin l=new Signin();
+            l.setBounds(400,200,500,300);
+            l.setVisible(true);
+
 
     }
 
-    String login(){
-        String a = JOptionPane.showInputDialog("Enter the values", null);
-        return a;
-    }
 
     void rules() throws FileNotFoundException,IOException{
-        BufferedReader br = new BufferedReader(new FileReader("/Users/guranshvir/Documents/VS CODE/Snake/Rules.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("/Users/solar/Documents/Rules.txt"));
         ArrayList<Character> a = new ArrayList<Character>();
         for (int i = 0; i < 116; i++) {
             a.add((char) br.read());
